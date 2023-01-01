@@ -1,0 +1,53 @@
+{
+    "skipTerminateQuickPick": true,
+    "skipSwitchToOutput": false,
+    "skipErrorMessage": true,
+    "commands": [
+        {
+            "text": "Comment",
+            "tooltip": "Comment",
+            "color": "yellow",
+            "commandType": "palette",
+            "command": "editor.action.blockComment",
+            "alignment": "left",
+            "skipTerminateQuickPick": false,
+            "priority": 0
+        },
+        {
+            "text": "Terminal",
+            "color": "lightgreen",
+            "commandType": "palette",
+            "command": "workbench.action.terminal.toggleTerminal",
+            "alignment": "left",
+            "skipTerminateQuickPick": false,
+            "priority": 0
+        },
+        {
+            "text": "Go to Bracket",
+            "color": "orange",
+            "commandType": "palette",
+            "command": "editor.action.jumpToBracket",
+            "alignment": "left",
+            "skipTerminateQuickPick": false,
+            "priority": 0
+        },
+        {
+            "text": "Format Selection",
+            "color": "lightblue",
+            "commandType": "palette",
+            "command": "editor.action.formatSelection",
+            "alignment": "left",
+            "skipTerminateQuickPick": false,
+            "priority": 0
+        },
+        {
+            "text": "html wrap",
+            "color": "white",
+            "commandType": "palette",
+            "command": "extension.wrapTag",
+            "alignment": "left",
+            "skipTerminateQuickPick": false,
+            "priority": 0
+        }
+    ]
+}
