@@ -1,7 +1,6 @@
-<script>
-	
-	
+<script>	
 	import Header from "./Header.svelte";
+	import "./app.css";
 	import "./styles.css";
 </script>
 
@@ -15,14 +14,15 @@
 
 		<footer>
 			<p>
-				visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn
-				SvelteKit
+				Footer
 			</p>
 		</footer>
 	</div>
 </div>
 
 <style>
+
+	
 	.app {
 		min-height: 100vh;
 	}

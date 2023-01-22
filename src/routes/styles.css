@@ -34,10 +34,11 @@ h1,
 h2,
 p {
 	font-weight: 400;
+	margin-bottom: 20px;
 }
 
 p {
-	line-height: 1.5;
+	line-height: 1.6;
 }
 
 a {
@@ -50,8 +51,9 @@ a:hover {
 }
 
 h1 {
-	font-size: 2rem;
-	text-align: center;
+	font-size: 1.4rem;
+	margin-bottom: 14px;
+	
 }
 
 h2 {
@@ -93,7 +95,7 @@ button:focus:not(:focus-visible) {
 
 @media (min-width: 720px) {
 	h1 {
-		font-size: 2.4rem;
+		font-size: 1.7rem;
 	}
 }
 
