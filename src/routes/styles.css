@@ -57,6 +57,12 @@ h2 {
 	color: #993366;
 }
 
+hr {
+	background-color: #669933;
+	margin-bottom: 12px;
+	height: 3px;
+}
+
 pre {
 	font-size: 16px;
 	font-family: var(--font-mono);

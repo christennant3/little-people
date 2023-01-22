@@ -67,6 +67,8 @@
 				please do not hesitate to contact us.
 			</p>
 
+			<hr>
+
 			<h2>Ofsted</h2>
 			<p>I am rated good. Download my report.</p>
 		</div>
