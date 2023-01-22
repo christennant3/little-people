@@ -4,7 +4,7 @@
 	import github from '$lib/images/github.svg';
 </script>
 
-<header>
+<header class="bg-white">
 	<div class="corner">
 		
 	</div>
@@ -20,9 +20,21 @@
 			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
 				<a href="/about">About</a>
 			</li>
-			<li aria-current={$page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
-				<a href="/sverdle">Sverdle</a>
+			<li aria-current={$page.url.pathname === '/gallery' ? 'page' : undefined}>
+				<a href="/gallery">Gallery</a>
 			</li>
+			<li aria-current={$page.url.pathname === '/policies' ? 'page' : undefined}>
+				<a href="/policies">Policies</a>
+			</li>
+
+			<li aria-current={$page.url.pathname === '/fees' ? 'page' : undefined}>
+				<a href="/fees">Fees</a>
+			</li>
+
+			<li aria-current={$page.url.pathname === '/contact' ? 'page' : undefined}>
+				<a href="/contact">Contact</a>
+			</li>
+			
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
@@ -38,7 +50,7 @@
 	header {
 		display: flex;
 		justify-content: space-between;
-		margin-bottom: 12px;
+		padding-bottom: 12px;
 	}
 
 	.corner {
@@ -50,7 +62,7 @@
 	nav {
 		display: flex;
 		justify-content: center;
-		--background: green;
+		--background: #336699;
 		color: white;
 
 		a:link {

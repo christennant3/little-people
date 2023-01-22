@@ -1,4 +1,5 @@
 <script>	
+
 	import Header from "./Header.svelte";
 	import "./app.css";
 	import "./styles.css";
@@ -8,7 +9,7 @@
 	<div id="wrapper">
 		<Header />
 
-		<main>			
+		<main class="bg-white">			
 			<slot />
 		</main>
 
@@ -28,7 +29,7 @@
 	}
 
 	#wrapper {
-		max-width: 1000px;
+		max-width: 1250px;
 		margin: 0 auto;
 	}
 
