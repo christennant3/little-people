@@ -46,10 +46,10 @@
 			</p>
 
 			<p>
-				I will provide a nurturing and
-				stimulating environment for your child. We plan a variety of
-				activities that encourage children to learn through play,
-				including outdoor games, gardening, and nature walks.
+				I will provide a nurturing and stimulating environment for your
+				child. We plan a variety of activities that encourage children
+				to learn through play, including outdoor games, gardening, and
+				nature walks.
 			</p>
 
 			<p>
@@ -67,7 +67,7 @@
 				please do not hesitate to contact us.
 			</p>
 
-			<hr>
+			<hr />
 
 			<h2>Ofsted</h2>
 			<p>I am rated good. Download my report.</p>
@@ -82,11 +82,5 @@
 		}
 	}
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
+
 </style>
