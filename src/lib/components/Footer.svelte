@@ -3,10 +3,13 @@
 </script>
 
 <footer>
-    <div class="bg-slate-500 p-2">
-    <p class="p-1 m-1">Footer</p>
+    <div class="footer-bg">
+    <p class="p-2">Footer</p>
     </div>
 </footer>
 
 <style lang="scss" scoped>
+    .footer-bg {
+       background-color: #336699;
+    }
 </style>
