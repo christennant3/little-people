@@ -22,8 +22,8 @@
 		/>
 	</div>
 
-	<div class="grid grid-cols-1 md:grid-cols-7 gap-1 pt-5 px-2 md:px-6">
-		<div class="col-span-2 text-center order-2 md:order-1">
+	<div id="main-content" class="grid grid-cols-1 md:grid-cols-7">
+		<div class="col-span-1 md:col-span-2 text-center order-2 md:order-1 mx-auto">
 			<img
 				src="/src/lib/images/logo.png"
 				alt="Little Peoples' Childminding Logo"
@@ -34,7 +34,7 @@
 				M:07961610806<br />Tel:02085672669
 			</div>
 		</div>
-		<div class="col-span-5 order-1">
+		<div class="col-span-1 md:col-span-5 order-1">
 			<h1>Welcome to Little Peoples' Childminding</h1>
 
 			<p>

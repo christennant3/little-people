@@ -16,7 +16,7 @@
 		/>
 	</div> -->
 
-	<div class="grid grid-cols-1 md:grid-cols-1 gap-1 pt-5 px-2 md:px-6">
+	<div  class="grid grid-cols-1 md:grid-cols-1 gap-1 pt-5 px-2 md:px-6">
 		<div class="text-center">
 			<h1>Gallery</h1>
 			<ImageCarousel />
