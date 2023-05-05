@@ -3,6 +3,7 @@
 
 	import welcome from "$lib/images/svelte-welcome.webp";
 	import welcome_fallback from "$lib/images/svelte-welcome.png";
+	import Side from "../lib/components/Side.svelte";
 </script>
 
 <svelte:head>
@@ -24,15 +25,7 @@
 
 	<div id="main-content" class="grid grid-cols-1 md:grid-cols-7">
 		<div class="col-span-1 md:col-span-2 text-center order-2 md:order-1 mx-auto">
-			<img
-				src="/src/lib/images/logo.png"
-				alt="Little Peoples' Childminding Logo"
-				class="mx-auto"
-			/>
-			<div class="text-center">
-				<p class="font-bold text-xl pb-3">Enquire now</p>
-				M:07961610806<br />Tel:02085672669
-			</div>
+		<Side />
 		</div>
 		<div class="col-span-1 md:col-span-5 order-1">
 			<h1>Welcome to Little Peoples' Childminding</h1>

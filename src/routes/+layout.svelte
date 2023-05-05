@@ -1,9 +1,4 @@
-<script>
-	import Header from "./Header.svelte";
-	import "./app.css";
-	import "./styles.css";
-	import Footer from "../lib/components/Footer.svelte";
-</script>
+
 
 <div class="app">
 	<div id="wrapper">
@@ -34,3 +29,10 @@
 		padding-bottom: 32px;
 	}
 </style>
+
+<script>
+	import Header from "./Header.svelte";
+	import "./app.css";
+	import "./styles.css";
+	import Footer from "../lib/components/Footer.svelte";
+</script>
