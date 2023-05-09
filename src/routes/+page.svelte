@@ -19,7 +19,7 @@
 		<img
 			src="/src/lib/images/home/home-banner.jpg"
 			alt="girls playing in the woods"
-			class="mx-auto pt-4"
+			class="mx-auto"
 		/>
 	</div>
 
@@ -72,6 +72,7 @@
 	#image-section {
 		img {
 			max-width: 100%;
+			
 		}
 	}
 

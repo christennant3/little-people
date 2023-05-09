@@ -8,7 +8,7 @@
 		<img
 			src="/src/lib/images/about/pond-header.jpg"
 			alt="children down at Skelton pond"
-			class="mx-auto pt-4"
+			class="mx-auto"
 		/>
 	</div>
 
