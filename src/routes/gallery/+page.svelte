@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>About</title>
+	<title>Little Peoples' Childminding Gallery</title>
 	<meta name="Childminder Skelton Gallery" content="Gallery and images" />
 </svelte:head>
 

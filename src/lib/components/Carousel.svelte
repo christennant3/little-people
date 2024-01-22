@@ -1,6 +1,9 @@
 
 <script lang="ts">
-  import {slide} from 'svelte/transition'
+  import {slide} from 'svelte/transition';
+  import { sineInOut } from 'svelte/easing';
+  import { onMount } from 'svelte';
+
     const gallery_items = [{
     url: '/src/lib/images/gallery/corn.jpg',
     description: 'Corn'
@@ -33,10 +36,23 @@
         currentSlideItem = gallery_items.length - 1;
     }
   }
+
+  const interval = setInterval(nextImage, 7000);
+  
+onMount(() => {
+  
+  gallery_items.forEach(item => {
+    const img = new Image();
+    img.src = item.url;
+  });
+});
+
+
+
 </script>
 <div>
 {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
-    <img transition:slide src={item.url} alt={item.description} width={400} height={553} class="mx-auto text-center" />
+    <img transition:slide={{ duration: 500, easing:sineInOut }} src={item.url} alt={item.description} class="mx-auto text-center"/>
 {/each}
 </div>
 
