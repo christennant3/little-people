@@ -47,8 +47,6 @@ onMount(() => {
   });
 });
 
-
-
 </script>
 <div>
 {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
