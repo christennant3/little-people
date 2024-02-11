@@ -62,7 +62,7 @@
 	nav {
 		justify-content: center;
 		--background: #336699;
-		color: white;
+		color: #ffffff;
 		width: 100%;
 		text-align: center;
 		background-color: #336699;
@@ -83,11 +83,11 @@
 			padding: 0;
 			overflow: hidden;
 			background: var(--background);
-			display: inline-block;
+			
 		}
 
 		li {
-			float: left;
+			display: inline-block;
 		}
 
 		li a {
