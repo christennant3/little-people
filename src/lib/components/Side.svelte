@@ -1,5 +1,8 @@
+<script>
+    import logo from '$lib/images/logo.png';
+</script>
 <img
-    src="/src/lib/images/logo.png"
+    src="{logo}"
     alt="Little Peoples' Childminding Logo"
     class="mx-auto"
 />

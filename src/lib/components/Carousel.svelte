@@ -3,22 +3,23 @@
   import {slide} from 'svelte/transition';
   import { sineInOut } from 'svelte/easing';
   import { onMount } from 'svelte';
+  
 
     const gallery_items = [{
-    url: '/src/lib/images/gallery/corn.jpg',
+    url: '/gallery/corn.jpg',
     description: 'Corn'
   }, {
-    url: '/src/lib/images/gallery/sand.jpg',
+    url: '/gallery/sand.jpg',
     description: 'Beach'
   },{
-    url: '/src/lib/images/gallery/trunk.jpg',
+    url: '/gallery/trunk.jpg',
     description: 'Woods'
   },{
-    url: '/src/lib/images/gallery/owl.jpg',
+    url: '/gallery/owl.jpg',
     description: 'Children with owl'
   },
   {
-    url: '/src/lib/images/gallery/woods2.jpg',
+    url: '/gallery/woods2.jpg',
     description: 'Exploring in the woods'
   },
 ]

@@ -13,11 +13,11 @@
                 Please visit my Facebook page: 
                 <a
                     href="https://www.facebook.com/people/Little-Peoples-Childminding/100063605529490/"
-                    ><img
+                    ><!-- <img
                         src="/src/lib/images/social/facebook-grey.png"
                         alt="facebook logo" class="p-3"
                         
-                    /></a
+                    /> --></a
                 >
             </div>
         </div>

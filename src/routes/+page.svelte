@@ -3,6 +3,10 @@
 
 	import welcome from "$lib/images/svelte-welcome.webp";
 	import welcome_fallback from "$lib/images/svelte-welcome.png";
+
+	import banner from '$lib/images/home/home-banner.jpg';
+
+
 	import Side from "../lib/components/Side.svelte";
 </script>
 
@@ -17,7 +21,7 @@
 <section id="content">
 	<div id="image-section">
 		<img
-			src="/src/lib/images/home/home-banner.jpg"
+			src="{banner}"
 			alt="girls playing in the woods"
 			class="mx-auto"
 		/>

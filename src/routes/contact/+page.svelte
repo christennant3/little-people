@@ -1,3 +1,7 @@
+<script>
+	import Side from "../../lib/components/Side.svelte";
+	import header from '$lib/images/about/pond-header.jpg';
+</script>
 <svelte:head>
 	<title>Contact me</title>
 	<meta name="description" content="Contat Little People Childminding Skelton" />
@@ -6,7 +10,7 @@
 <section id="content">
 	<div id="image-section">
 		<img
-			src="/src/lib/images/about/pond-header.jpg"
+			src="{header}"
 			alt="children down at Skelton pond"
 			class="mx-auto"
 		/>
@@ -22,8 +26,3 @@
 		</div>
 	</div>
 </section>
-
-<script>
-
-	import Side from "../../lib/components/Side.svelte";
-</script>

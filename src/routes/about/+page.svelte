@@ -1,3 +1,10 @@
+<script>
+	import header from '$lib/images/about/pond-header.jpg';
+	import dales from '$lib/images/about/dales.jpg';
+	import kate from '$lib/images/about/kate.jpg';
+</script>
+
+
 <svelte:head>
 	<title>About</title>
 	<meta name="description" content="About this app" />
@@ -6,7 +13,7 @@
 <section id="content">
 	<div id="image-section">
 		<img
-			src="/src/lib/images/about/pond-header.jpg"
+			src="{header}"
 			alt="children down at Skelton pond"
 			class="mx-auto"
 		/>
@@ -15,12 +22,12 @@
 	<div id="main-content" class="grid grid-cols-1 md:grid-cols-7">
 		<div class="col-span-1 md:col-span-2 text-center order-2 md:order-1 mx-auto">
 			<img
-				src="/src/lib/images/about/dales.jpg"
+				src="{dales}"
 				alt="Kate"
 				class="mb-6"
 			/>
 
-			<img src="/src/lib/images/about/kate.jpg" alt="Kate" class="mb-6" />
+			<img src="{kate}" alt="Kate" class="mb-6" />
 		</div>
 		<div class="col-span-1 md:col-span-5 order-1">
 			<h1>About Kate</h1>
