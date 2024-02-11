@@ -1,11 +1,8 @@
 <script>
 	import { page } from "$app/stores";
-	import logo from "$lib/images/svelte-logo.svg";
-	import github from "$lib/images/github.svg";
 </script>
 
-<header class="bg-white">
-	
+<header class="bg-white">	
 	<nav>
 		<ul>
 			<li aria-current={$page.url.pathname === "/" ? "page" : undefined}>
@@ -54,8 +51,7 @@
 </header>
 
 <style lang="scss">
-	header {
-	
+	header {	
 		width: 100%;
 	}
 
@@ -94,12 +90,23 @@
 			display: block;
 			color: white;
 			text-align: center;
-			padding: 16px;
+			padding: 8px;
 			text-decoration: none;
 		}
 
 		li a:hover {
 			background-color: var(--color-theme-1);
+		}
+	}
+
+	
+	@media (min-width: 600px) {
+		nav {
+			li {
+				a {
+					padding: 16px;
+				}
+			}
 		}
 	}
 </style>

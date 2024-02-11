@@ -104,10 +104,6 @@
   {/each}
 </div>
 
-<div class="carousel-buttons">
-  <button on:click={() => prevImage()}>Previous</button>
-  <button on:click={() => nextImage()}>Next</button>
-</div>
 <div class="carousel-buttons grid grid-cols-2 gap-4">
   <button
     class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
@@ -156,5 +152,6 @@
     max-width: 300px;
     margin: 0 auto;
     margin-bottom: 14px;
+    margin-top: 12px;
   }
 </style>
