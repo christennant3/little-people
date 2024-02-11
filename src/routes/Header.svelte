@@ -98,7 +98,6 @@
 			background-color: var(--color-theme-1);
 		}
 	}
-
 	
 	@media (min-width: 600px) {
 		nav {
