@@ -64,6 +64,9 @@
 		--background: #336699;
 		color: white;
 		width: 100%;
+		text-align: center;
+		background-color: #336699;
+		height: 61px;
 
 		a:link {
 			color: white;
@@ -80,6 +83,7 @@
 			padding: 0;
 			overflow: hidden;
 			background: var(--background);
+			display: inline-block;
 		}
 
 		li {
