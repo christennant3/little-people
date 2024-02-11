@@ -1,4 +1,5 @@
 <script>
+    import facebook from '$lib/images/social/facebook-grey.png';
 </script>
 
 <footer>
@@ -13,11 +14,11 @@
                 Please visit my Facebook page: 
                 <a
                     href="https://www.facebook.com/people/Little-Peoples-Childminding/100063605529490/"
-                    ><!-- <img
-                        src="/src/lib/images/social/facebook-grey.png"
+                    ><img
+                        src="{facebook}"
                         alt="facebook logo" class="p-3"
                         
-                    /> --></a
+                    /> </a
                 >
             </div>
         </div>
