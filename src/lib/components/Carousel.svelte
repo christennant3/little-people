@@ -1,7 +1,7 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import { sineInOut } from "svelte/easing";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
 
   const gallery_items = [
     {
@@ -27,131 +27,235 @@
   ];
 
   let currentSlideItem = 0;
+  let isPlaying = true;
+  let interval: ReturnType<typeof setInterval>;
+  let isLoading = true;
 
   const nextImage = () => {
     currentSlideItem = (currentSlideItem + 1) % gallery_items.length;
   };
 
   const prevImage = () => {
-    if (currentSlideItem != 0) {
-      currentSlideItem = (currentSlideItem - 1) % gallery_items.length;
+    currentSlideItem = currentSlideItem === 0 
+      ? gallery_items.length - 1 
+      : (currentSlideItem - 1);
+  };
+
+  const togglePlay = () => {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+      startAutoPlay();
     } else {
-      currentSlideItem = gallery_items.length - 1;
+      clearInterval(interval);
     }
   };
 
-  const interval = setInterval(nextImage, 7000);
+  const startAutoPlay = () => {
+    interval = setInterval(nextImage, 5000);
+  };
+
+  const handleKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowLeft') prevImage();
+    if (event.key === 'ArrowRight') nextImage();
+    if (event.key === 'Space') togglePlay();
+  };
 
   onMount(() => {
+    window.addEventListener('keydown', handleKeydown);
+    let loadedImages = 0;
+    
     gallery_items.forEach((item) => {
       const img = new Image();
       img.src = item.url;
+      img.onload = () => {
+        loadedImages++;
+        if (loadedImages === gallery_items.length) {
+          isLoading = false;
+        }
+      };
     });
+
+    startAutoPlay();
+  });
+
+  onDestroy(() => {
+    clearInterval(interval);
+    window.removeEventListener('keydown', handleKeydown);
   });
 </script>
 
-<div class="carousel-buttons grid grid-cols-2 gap-4">
-  <button
-    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-    on:click={() => prevImage()}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+<div 
+  class="carousel"
+  on:mouseenter={() => isPlaying && clearInterval(interval)}
+  on:mouseleave={() => isPlaying && startAutoPlay()}
+>
+  <div class="image-container">
+    {#if isLoading}
+      <div class="loading">Loading images...</div>
+    {/if}
+    
+    {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
+      <img
+        transition:slide={{ duration: 300, easing: sineInOut }}
+        src={item.url}
+        alt={item.description}
+        class="carousel-image"
       />
-    </svg>
-    <span> Previous</span></button
-  >
+    {/each}
+  </div>
 
-  <button
-    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-    on:click={() => nextImage()}
-  >
-    <span>Next</span>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-      />
-    </svg>
-  </button>
-</div>
-<div>
-  {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
-    <img
-      transition:slide={{ duration: 500, easing: sineInOut }}
-      src={item.url}
-      alt={item.description}
-      class="mx-auto text-center"
-    />
-  {/each}
+  <div class="carousel-controls">
+    <div class="nav-buttons">
+      <button
+        class="nav-button prev"
+        on:click={prevImage}
+        aria-label="Previous image"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          class="nav-icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+          />
+        </svg>
+      </button>
+
+      <button
+        class="play-button"
+        on:click={togglePlay}
+        aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
+      >
+        {#if isPlaying}
+          <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24">
+            <path d="M10 9v6m4-6v6" />
+          </svg>
+        {:else}
+          <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24">
+            <path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+          </svg>
+        {/if}
+      </button>
+
+      <button
+        class="nav-button next"
+        on:click={nextImage}
+        aria-label="Next image"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          class="nav-icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
 </div>
 
-<div class="carousel-buttons grid grid-cols-2 gap-4">
-  <button
-    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-    on:click={() => prevImage()}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-      />
-    </svg>
-    <span> Previous</span></button
-  >
-
-  <button
-    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-    on:click={() => nextImage()}
-  >
-    <span>Next</span>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-      />
-    </svg>
-  </button>
-</div>
 <style lang="scss">
-  .carousel-buttons {
-    max-width: 300px;
+  .carousel {
+    position: relative;
+    max-width: 800px;
     margin: 0 auto;
-    margin-bottom: 14px;
-    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .carousel-controls {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .nav-buttons {
+    pointer-events: auto;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    border-radius: 2rem;
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  .nav-button, .play-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.3);
+      transform: scale(1.1);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  .nav-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: white;
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .play-button {
+    .nav-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+
+  .image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px;
+    width: 100%;
+  }
+
+  .carousel-image {
+    max-width: 100%;
+    max-height: 600px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    @apply text-gray-600;
+  }
+
+  .carousel-buttons {
+    display: none;
   }
 </style>
