@@ -175,6 +175,7 @@
   </div>
 </div>
 
+
 <style lang="scss">
   .carousel {
     position: relative;
