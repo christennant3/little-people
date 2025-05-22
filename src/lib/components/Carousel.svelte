@@ -2,6 +2,7 @@
   import { slide } from "svelte/transition";
   import { sineInOut } from "svelte/easing";
   import { onMount, onDestroy } from "svelte";
+  import { browser } from "$app/environment";
 
   const gallery_items = [
     {
@@ -36,9 +37,8 @@
   };
 
   const prevImage = () => {
-    currentSlideItem = currentSlideItem === 0 
-      ? gallery_items.length - 1 
-      : (currentSlideItem - 1);
+    currentSlideItem =
+      currentSlideItem === 0 ? gallery_items.length - 1 : currentSlideItem - 1;
   };
 
   const togglePlay = () => {
@@ -55,36 +55,40 @@
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowLeft') prevImage();
-    if (event.key === 'ArrowRight') nextImage();
-    if (event.key === 'Space') togglePlay();
+    if (event.key === "ArrowLeft") prevImage();
+    if (event.key === "ArrowRight") nextImage();
+    if (event.key === "Space") togglePlay();
   };
 
   onMount(() => {
-    window.addEventListener('keydown', handleKeydown);
-    let loadedImages = 0;
-    
-    gallery_items.forEach((item) => {
-      const img = new Image();
-      img.src = item.url;
-      img.onload = () => {
-        loadedImages++;
-        if (loadedImages === gallery_items.length) {
-          isLoading = false;
-        }
-      };
-    });
+    if (browser) {
+      window.addEventListener('keydown', handleKeydown);
+      let loadedImages = 0;
+      
+      gallery_items.forEach((item) => {
+        const img = new Image();
+        img.src = item.url;
+        img.onload = () => {
+          loadedImages++;
+          if (loadedImages === gallery_items.length) {
+            isLoading = false;
+          }
+        };
+      });
 
-    startAutoPlay();
+      startAutoPlay();
+    }
   });
 
   onDestroy(() => {
-    clearInterval(interval);
-    window.removeEventListener('keydown', handleKeydown);
+    if (browser) {
+      clearInterval(interval);
+      window.removeEventListener('keydown', handleKeydown);
+    }
   });
 </script>
 
-<div 
+<div
   class="carousel"
   on:mouseenter={() => isPlaying && clearInterval(interval)}
   on:mouseleave={() => isPlaying && startAutoPlay()}
@@ -93,7 +97,7 @@
     {#if isLoading}
       <div class="loading">Loading images...</div>
     {/if}
-    
+
     {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
       <img
         transition:slide={{ duration: 300, easing: sineInOut }}
@@ -130,12 +134,22 @@
         aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
       >
         {#if isPlaying}
-          <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="nav-icon"
+            viewBox="0 0 24 24"
+          >
             <path d="M10 9v6m4-6v6" />
           </svg>
         {:else}
-          <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon" viewBox="0 0 24 24">
-            <path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="nav-icon"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+            />
           </svg>
         {/if}
       </button>
@@ -193,7 +207,8 @@
     margin: 0 auto;
   }
 
-  .nav-button, .play-button {
+  .nav-button,
+  .play-button {
     background: rgba(255, 255, 255, 0.2);
     border: none;
     border-radius: 50%;
@@ -204,12 +219,12 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.3);
       transform: scale(1.1);
     }
-    
+
     &:active {
       transform: scale(0.95);
     }
@@ -252,10 +267,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    @apply text-gray-600;
-  }
-
-  .carousel-buttons {
-    display: none;
+    color: #4b5563;
   }
 </style>
