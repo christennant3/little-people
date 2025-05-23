@@ -31,6 +31,7 @@
   let isPlaying = true;
   let interval: ReturnType<typeof setInterval>;
   let isLoading = true;
+  let loadTimeout: ReturnType<typeof setTimeout>;
 
   const nextImage = () => {
     currentSlideItem = (currentSlideItem + 1) % gallery_items.length;
@@ -51,126 +52,192 @@
   };
 
   const startAutoPlay = () => {
+    if (interval) clearInterval(interval);
     interval = setInterval(nextImage, 5000);
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
     if (event.key === "ArrowLeft") prevImage();
     if (event.key === "ArrowRight") nextImage();
-    if (event.key === "Space") togglePlay();
+    if (event.key === " ") {
+      event.preventDefault();
+      togglePlay();
+    }
   };
 
-  onMount(() => {
-    if (browser) {
-      window.addEventListener("keydown", handleKeydown);
-      let loadedImages = 0;
-
-      gallery_items.forEach((item) => {
-        const img = new Image();
-        img.src = item.url;
-        img.onload = () => {
-          loadedImages++;
-          if (loadedImages === gallery_items.length) {
-            isLoading = false;
-          }
-        };
+  const preloadImages = async () => {
+    try {
+      const loadPromises = gallery_items.map((item) => {
+        return new Promise<void>((resolve, reject) => {
+          const img = new Image();
+          
+          const cleanup = () => {
+            img.onload = null;
+            img.onerror = null;
+          };
+          
+          img.onload = () => {
+            cleanup();
+            resolve();
+          };
+          
+          img.onerror = () => {
+            cleanup();
+            console.warn(`Failed to load image: ${item.url}`);
+            // Resolve anyway to not block the carousel
+            resolve();
+          };
+          
+          img.src = item.url;
+        });
       });
 
-      startAutoPlay();
+      // Wait for all images to load or fail
+      await Promise.all(loadPromises);
+    } catch (error) {
+      console.error('Error preloading images:', error);
+    } finally {
+      // Always hide loading after attempt
+      isLoading = false;
+    }
+  };
+
+  onMount(async () => {
+    if (browser) {
+      window.addEventListener("keydown", handleKeydown);
+      
+      // Set a maximum loading time
+      loadTimeout = setTimeout(() => {
+        console.warn('Image loading timeout reached');
+        isLoading = false;
+      }, 3000);
+
+      // Preload images
+      await preloadImages();
+      
+      // Clear timeout if loading completed before timeout
+      if (loadTimeout) {
+        clearTimeout(loadTimeout);
+      }
+
+      // Start autoplay after loading is complete
+      if (isPlaying) {
+        startAutoPlay();
+      }
     }
   });
 
   onDestroy(() => {
     if (browser) {
-      clearInterval(interval);
+      if (interval) clearInterval(interval);
+      if (loadTimeout) clearTimeout(loadTimeout);
       window.removeEventListener("keydown", handleKeydown);
     }
   });
+
+  // Reactive statement to handle autoplay when isPlaying changes
+  $: if (browser && !isLoading) {
+    if (isPlaying) {
+      startAutoPlay();
+    } else {
+      if (interval) clearInterval(interval);
+    }
+  }
 </script>
 
 <div
   class="carousel"
-  on:mouseenter={() => isPlaying && clearInterval(interval)}
-  on:mouseleave={() => isPlaying && startAutoPlay()}
+  on:mouseenter={() => isPlaying && interval && clearInterval(interval)}
+  on:mouseleave={() => isPlaying && !isLoading && startAutoPlay()}
 >
   <div class="image-container">
-
-
-    {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
-      <img
-        transition:slide={{ duration: 300, easing: sineInOut }}
-        src={item.url}
-        alt={item.description}
-        class="carousel-image"
-      />
-    {/each}
+    {#if isLoading}
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading images...</p>
+      </div>
+    {:else}
+      {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
+        <img
+          transition:slide={{ duration: 300, easing: sineInOut }}
+          src={item.url}
+          alt={item.description}
+          class="carousel-image"
+          loading="eager"
+        />
+      {/each}
+    {/if}
   </div>
 
-  <div class="carousel-controls">
-    <div class="nav-buttons">
-      <button
-        class="nav-button prev"
-        on:click={prevImage}
-        aria-label="Previous image"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          class="nav-icon"
+  {#if !isLoading}
+    <div class="carousel-controls">
+      <div class="nav-buttons">
+        <button
+          class="nav-button prev"
+          on:click={prevImage}
+          aria-label="Previous image"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-          />
-        </svg>
-      </button>
-
-      <button
-        class="play-button"
-        on:click={togglePlay}
-        aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
-      >
-        {#if isPlaying}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="nav-icon"
             viewBox="0 0 24 24"
-          >
-            <path d="M10 9v6m4-6v6" />
-          </svg>
-        {:else}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
             class="nav-icon"
-            viewBox="0 0 24 24"
           >
             <path
-              d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
             />
           </svg>
-        {/if}
-      </button>
+        </button>
 
-      <button
-        class="nav-button next"
-        on:click={nextImage}
-        aria-label="Next image"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          class="nav-icon"
+        <button
+          class="play-button"
+          on:click={togglePlay}
+          aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-          />
-        </svg>
-      </button>
+          {#if isPlaying}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="nav-icon"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6" />
+            </svg>
+          {:else}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="nav-icon"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round" 
+                stroke-linejoin="round"
+                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+              />
+            </svg>
+          {/if}
+        </button>
+
+        <button
+          class="nav-button next"
+          on:click={nextImage}
+          aria-label="Next image"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="nav-icon"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
-  </div>
+  {/if}
 </div>
 
 <style lang="scss">
@@ -265,6 +332,29 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
     color: #4b5563;
+    
+    p {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>
