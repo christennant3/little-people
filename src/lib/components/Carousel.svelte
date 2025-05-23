@@ -21,10 +21,10 @@
       url: "/gallery/owl.jpg",
       description: "Children with owl",
     },
-    {
+/*     {
       url: "/gallery/woods2.jpg",
       description: "Exploring in the woods",
-    },
+    }, */
   ];
 
   let currentSlideItem = 0;
