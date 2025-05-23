@@ -6,6 +6,10 @@
 
   const gallery_items = [
     {
+      url: "/src/lib/images/woods.jpg",
+      description: "Children in the pond",
+    },
+    {
       url: "/gallery-images/corn.jpg",
       description: "Corn",
     },
