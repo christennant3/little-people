@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { slide } from "svelte/transition";
-  import { sineInOut } from "svelte/easing";
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";
 
@@ -31,38 +29,50 @@
     },
   ];
 
-  let currentSlideItem = 0;
+  // Add type declaration for window.Glider
+  declare global {
+    interface Window {
+      Glider: any;
+    }
+  }
+
+  let gliderElement: HTMLElement;
+  let glider: any;
   let isPlaying = true;
-  let interval: ReturnType<typeof setInterval>;
-  let isLoading = false;
-  let loadTimeout: ReturnType<typeof setTimeout>;
-
-  const nextImage = () => {
-    currentSlideItem = (currentSlideItem + 1) % gallery_items.length;
-  };
-
-  const prevImage = () => {
-    currentSlideItem =
-      currentSlideItem === 0 ? gallery_items.length - 1 : currentSlideItem - 1;
-  };
+  let autoplayInterval: ReturnType<typeof setInterval>;
+  let isLoading = true;
+  let currentSlide = 0;
 
   const togglePlay = () => {
     isPlaying = !isPlaying;
     if (isPlaying) {
-      startAutoPlay();
+      startAutoplay();
     } else {
-      clearInterval(interval);
+      clearInterval(autoplayInterval);
     }
   };
 
-  const startAutoPlay = () => {
-    if (interval) clearInterval(interval);
-    interval = setInterval(nextImage, 5000);
+  const startAutoplay = () => {
+    if (autoplayInterval) clearInterval(autoplayInterval);
+    autoplayInterval = setInterval(() => {
+      if (glider && isPlaying) {
+        const nextIndex = (currentSlide + 1) % gallery_items.length;
+        glider.scrollItem(nextIndex);
+      }
+    }, 5000);
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
-    if (event.key === "ArrowLeft") prevImage();
-    if (event.key === "ArrowRight") nextImage();
+    if (!glider) return;
+    
+    if (event.key === "ArrowLeft") {
+      const prevIndex = currentSlide === 0 ? gallery_items.length - 1 : currentSlide - 1;
+      glider.scrollItem(prevIndex);
+    }
+    if (event.key === "ArrowRight") {
+      const nextIndex = (currentSlide + 1) % gallery_items.length;
+      glider.scrollItem(nextIndex);
+    }
     if (event.key === " ") {
       event.preventDefault();
       togglePlay();
@@ -85,7 +95,6 @@
           img.onload = () => {
             cleanup();
             loadedCount++;
-            // Only hide loading when all images are loaded
             if (loadedCount === gallery_items.length) {
               isLoading = false;
             }
@@ -106,81 +115,161 @@
     } catch (error) {
       console.error('Error preloading images:', error);
     } finally {
-      // Set loading to false after maximum wait time
       setTimeout(() => {
         isLoading = false;
       }, 5000);
     }
   };
 
+  const initGlider = async () => {
+    if (!browser || !gliderElement) return;
+
+    // Load Glider.js script dynamically
+    if (typeof window.Glider === 'undefined') {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/glider-js@1/glider.min.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+    
+    glider = new window.Glider(gliderElement, {
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      draggable: true,
+      dragVelocity: 1.3,
+      dots: '.glider-dots',
+      arrows: {
+        prev: '.glider-prev',
+        next: '.glider-next'
+      },
+      responsive: [
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dragVelocity: 1
+          }
+        }
+      ]
+    });
+
+    // Listen for slide changes
+    gliderElement.addEventListener('glider-slide-visible', (event: any) => {
+      currentSlide = event.detail.slide;
+    });
+
+    if (isPlaying) {
+      startAutoplay();
+    }
+  };
+
   onMount(async () => {
     if (browser) {
+      // Load Glider.js CSS
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://cdn.jsdelivr.net/npm/glider-js@1/glider.min.css';
+      document.head.appendChild(link);
+
       window.addEventListener("keydown", handleKeydown);
       await preloadImages();
-      
-      if (isPlaying) {
-        startAutoPlay();
-      }
+      await initGlider();
     }
   });
 
   onDestroy(() => {
     if (browser) {
-      if (interval) clearInterval(interval);
+      if (autoplayInterval) clearInterval(autoplayInterval);
       window.removeEventListener("keydown", handleKeydown);
+      if (glider && glider.destroy) {
+        glider.destroy();
+      }
     }
   });
 
-  // Reactive statement to handle autoplay when isPlaying changes
-  $: if (browser && !isLoading) {
-    if (isPlaying) {
-      startAutoPlay();
-    } else {
-      if (interval) clearInterval(interval);
+  const goToPrev = () => {
+    if (glider) {
+      const prevIndex = currentSlide === 0 ? gallery_items.length - 1 : currentSlide - 1;
+      glider.scrollItem(prevIndex);
     }
-  }
+  };
+
+  const goToNext = () => {
+    if (glider) {
+      const nextIndex = (currentSlide + 1) % gallery_items.length;
+      glider.scrollItem(nextIndex);
+    }
+  };
 </script>
 
-{#key currentSlideItem}
-<div class="carousel">
-  <div class="image-container">
-    {#if isLoading}
-      <div class="loading">
-        <div class="loading-spinner"></div>
-        <p>Loading images...</p>
-      </div>
-    {:else}
-      <img
-        transition:slide={{ duration: 400, easing: sineInOut }}
-        src={gallery_items[currentSlideItem].url}
-        alt={gallery_items[currentSlideItem].description}
-        class="carousel-image"
-        on:error={() => console.error(`Failed to display image: ${gallery_items[currentSlideItem].url}`)}
-      />
-    {/if}
-  </div>
-
-  {#if !isLoading}
-    <div class="carousel-controls">
-      <div class="nav-buttons">
-        <button
-          class="nav-button prev"
-          on:click={prevImage}
-          aria-label="Previous image"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            class="nav-icon"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+<div class="carousel-container">
+  {#if isLoading}
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading images...</p>
+    </div>
+  {:else}
+    <div class="glider-contain">
+      <div class="glider" bind:this={gliderElement}>
+        {#each gallery_items as item}
+          <div class="glider-slide">
+            <img
+              src={item.url}
+              alt={item.description}
+              class="carousel-image"
+              on:error={() => console.error(`Failed to display image: ${item.url}`)}
             />
-          </svg>
-        </button>
+          </div>
+        {/each}
+      </div>
 
+      <button 
+        class="glider-prev nav-button" 
+        aria-label="Previous image"
+        on:click={goToPrev}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          class="nav-icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+          />
+        </svg>
+      </button>
+
+      <button 
+        class="glider-next nav-button" 
+        aria-label="Next image"
+        on:click={goToNext}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          class="nav-icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+          />
+        </svg>
+      </button>
+
+      <!-- Dots positioned below the carousel -->
+      <div class="glider-dots"></div>
+    </div>
+
+    <!-- Play button positioned at bottom of screen -->
+    <div class="carousel-controls">
+      <div class="control-buttons">
         <button
           class="play-button"
           on:click={togglePlay}
@@ -208,32 +297,13 @@
             </svg>
           {/if}
         </button>
-
-        <button
-          class="nav-button next"
-          on:click={nextImage}
-          aria-label="Next image"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            class="nav-icon"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-            />
-          </svg>
-        </button>
       </div>
     </div>
   {/if}
 </div>
-{/key}
 
 <style lang="scss">
-  .carousel {
+  .carousel-container {
     position: relative;
     max-width: 800px;
     margin: 0 auto;
@@ -242,17 +312,85 @@
     align-items: center;
   }
 
+  .glider-contain {
+    position: relative;
+    width: 100%;
+  }
+
+  .glider-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px;
+  }
+
+  .carousel-image {
+    max-width: 100%;
+    max-height: 600px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  .nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.9);
+      border-color: white;
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    &:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    &.glider-prev {
+      left: 1rem;
+    }
+
+    &.glider-next {
+      right: 1rem;
+    }
+  }
+
+  .nav-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: white;
+    stroke-width: 2;
+    fill: none;
+  }
+
   .carousel-controls {
     position: fixed;
     bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
-    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 
-  .nav-buttons {
-    pointer-events: auto;
+  .control-buttons {
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -261,10 +399,8 @@
     backdrop-filter: blur(4px);
     border-radius: 2rem;
     width: fit-content;
-    margin: 0 auto;
   }
 
-  .nav-button,
   .play-button {
     background: rgba(255, 255, 255, 0.2);
     border: none;
@@ -285,39 +421,11 @@
     &:active {
       transform: scale(0.95);
     }
-  }
 
-  .nav-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    stroke: white;
-    stroke-width: 2;
-    fill: none;
-  }
-
-  .play-button {
     .nav-icon {
       width: 1.2rem;
       height: 1.2rem;
     }
-  }
-
-  .image-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 600px;
-    width: 100%;
-  }
-
-  .carousel-image {
-    max-width: 100%;
-    max-height: 600px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    object-fit: contain;  // Ensure images maintain aspect ratio
   }
 
   .loading {
@@ -349,5 +457,43 @@
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+
+  // Custom Glider.js styles - dots positioned below carousel
+  :global(.glider-dots) {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    position: relative;
+
+    button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 0, 0, 0.3);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &.active {
+        background: #3498db;
+        border-color: #3498db;
+      }
+
+      &:hover {
+        border-color: rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+
+  // Override default Glider.js styles
+  :global(.glider::-webkit-scrollbar) {
+    display: none;
+  }
+
+  :global(.glider) {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 </style>
