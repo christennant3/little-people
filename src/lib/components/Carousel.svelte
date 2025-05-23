@@ -6,23 +6,23 @@
 
   const gallery_items = [
     {
-      url: "/gallery/corn.jpg",
+      url: "/gallery-images/corn.jpg",
       description: "Corn",
     },
     {
-      url: "/gallery/sand.jpg",
+      url: "/gallery-images/sand.jpg",
       description: "Beach",
     },
     {
-      url: "/gallery/trunk.jpg",
+      url: "/gallery-images/trunk.jpg",
       description: "Woods",
     },
     {
-      url: "/gallery/owl.jpg",
+      url: "/gallery-images/owl.jpg",
       description: "Children with owl",
     },
     {
-      url: "/gallery/woods2.jpg",
+      url: "/gallery-images/woods2.jpg",
       description: "Exploring in the woods",
     },
   ];
