@@ -69,7 +69,7 @@
     }
   };
 
-  const preloadImages = async () => {
+/*   const preloadImages = async () => {
     try {
       const loadPromises = gallery_items.map((item) => {
         return new Promise<void>((resolve, reject) => {
@@ -104,7 +104,7 @@
       // Always hide loading after attempt
       isLoading = false;
     }
-  };
+  }; */
 
   onMount(async () => {
     if (browser) {
@@ -117,7 +117,7 @@
       }, 3000);
 
       // Preload images
-      await preloadImages();
+      //await preloadImages();
       
       // Clear timeout if loading completed before timeout
       if (loadTimeout) {
