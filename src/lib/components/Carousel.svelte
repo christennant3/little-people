@@ -69,7 +69,9 @@
     }
   };
 
-/*   const preloadImages = async () => {
+  const preloadImages = async () => {
+    let loadedCount = 0;
+    
     try {
       const loadPromises = gallery_items.map((item) => {
         return new Promise<void>((resolve, reject) => {
@@ -82,49 +84,40 @@
           
           img.onload = () => {
             cleanup();
+            loadedCount++;
+            // Only hide loading when all images are loaded
+            if (loadedCount === gallery_items.length) {
+              isLoading = false;
+            }
             resolve();
           };
           
           img.onerror = () => {
             cleanup();
-            console.warn(`Failed to load image: ${item.url}`);
-            // Resolve anyway to not block the carousel
-            resolve();
+            console.error(`Failed to load image: ${item.url}`);
+            reject(new Error(`Failed to load image: ${item.url}`));
           };
           
           img.src = item.url;
         });
       });
 
-      // Wait for all images to load or fail
-      await Promise.all(loadPromises);
+      await Promise.allSettled(loadPromises);
     } catch (error) {
       console.error('Error preloading images:', error);
     } finally {
-      // Always hide loading after attempt
-      isLoading = false;
+      // Set loading to false after maximum wait time
+      setTimeout(() => {
+        isLoading = false;
+      }, 5000);
     }
-  }; */
+  };
 
   onMount(async () => {
     if (browser) {
       window.addEventListener("keydown", handleKeydown);
+      await preloadImages();
       
-      // Set a maximum loading time
-      loadTimeout = setTimeout(() => {
-        console.warn('Image loading timeout reached');
-        isLoading = false;
-      }, 3000);
-
-      // Preload images
-      //await preloadImages();
-      
-      // Clear timeout if loading completed before timeout
-      if (loadTimeout) {
-        clearTimeout(loadTimeout);
-      }
-
-      // Start autoplay after loading is complete
       if (isPlaying) {
         startAutoPlay();
       }
@@ -134,7 +127,6 @@
   onDestroy(() => {
     if (browser) {
       if (interval) clearInterval(interval);
-      if (loadTimeout) clearTimeout(loadTimeout);
       window.removeEventListener("keydown", handleKeydown);
     }
   });
@@ -149,11 +141,8 @@
   }
 </script>
 
-<div
-  class="carousel"
-  on:mouseenter={() => isPlaying && interval && clearInterval(interval)}
-  on:mouseleave={() => isPlaying && !isLoading && startAutoPlay()}
->
+{#key currentSlideItem}
+<div class="carousel">
   <div class="image-container">
     {#if isLoading}
       <div class="loading">
@@ -161,15 +150,13 @@
         <p>Loading images...</p>
       </div>
     {:else}
-      {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
-        <img
-          transition:slide={{ duration: 300, easing: sineInOut }}
-          src={item.url}
-          alt={item.description}
-          class="carousel-image"
-          loading="eager"
-        />
-      {/each}
+      <img
+        transition:slide={{ duration: 400, easing: sineInOut }}
+        src={gallery_items[currentSlideItem].url}
+        alt={gallery_items[currentSlideItem].description}
+        class="carousel-image"
+        on:error={() => console.error(`Failed to display image: ${gallery_items[currentSlideItem].url}`)}
+      />
     {/if}
   </div>
 
@@ -243,6 +230,7 @@
     </div>
   {/if}
 </div>
+{/key}
 
 <style lang="scss">
   .carousel {
@@ -329,6 +317,7 @@
     height: auto;
     display: block;
     margin: 0 auto;
+    object-fit: contain;  // Ensure images maintain aspect ratio
   }
 
   .loading {
