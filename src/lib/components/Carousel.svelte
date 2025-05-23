@@ -21,10 +21,10 @@
       url: "/gallery/owl.jpg",
       description: "Children with owl",
     },
-/*     {
+    {
       url: "/gallery/woods2.jpg",
       description: "Exploring in the woods",
-    }, */
+    },
   ];
 
   let currentSlideItem = 0;
@@ -62,9 +62,9 @@
 
   onMount(() => {
     if (browser) {
-      window.addEventListener('keydown', handleKeydown);
+      window.addEventListener("keydown", handleKeydown);
       let loadedImages = 0;
-      
+
       gallery_items.forEach((item) => {
         const img = new Image();
         img.src = item.url;
@@ -83,7 +83,7 @@
   onDestroy(() => {
     if (browser) {
       clearInterval(interval);
-      window.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener("keydown", handleKeydown);
     }
   });
 </script>
@@ -94,9 +94,7 @@
   on:mouseleave={() => isPlaying && startAutoPlay()}
 >
   <div class="image-container">
-    {#if isLoading}
-      <div class="loading">Loading images...</div>
-    {/if}
+
 
     {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
       <img
@@ -174,7 +172,6 @@
     </div>
   </div>
 </div>
-
 
 <style lang="scss">
   .carousel {
