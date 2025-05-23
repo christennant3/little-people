@@ -34,7 +34,7 @@
   let currentSlideItem = 0;
   let isPlaying = true;
   let interval: ReturnType<typeof setInterval>;
-  let isLoading = true;
+  let isLoading = false;
   let loadTimeout: ReturnType<typeof setTimeout>;
 
   const nextImage = () => {
