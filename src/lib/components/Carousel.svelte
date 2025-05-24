@@ -30,6 +30,7 @@
 
   const nextImage = () => {
     currentSlideItem = (currentSlideItem + 1) % gallery_items.length;
+    debugger;
   };
 
   const prevImage = () => {
