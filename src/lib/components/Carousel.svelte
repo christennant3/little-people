@@ -3,6 +3,8 @@
   import { sineInOut } from "svelte/easing";
   import { onMount } from "svelte";
   import kate from '$lib/images/about/kate.jpg';
+  import dales from '$lib/images/gallery/dales.jpg';
+  import pond from '$lib/images/gallery/pond-header.jpg';
 
   const gallery_items = [
     {
@@ -10,7 +12,11 @@
       description: "Child with owl",
     },
     {
-      url: "/gallery-images/corn.jpg",
+      url: dales,
+      description: "Child with owl",
+    },
+    {
+      url: pond,
       description: "Corn",
     },
     {
