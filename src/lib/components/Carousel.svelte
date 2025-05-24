@@ -16,6 +16,7 @@
       url: "/src/lib/images/about/kate.jpg",
       description: "Child with owl",
     },
+    
     {
       url: "/gallery-images/sand.jpg",
       description: "Beach",
