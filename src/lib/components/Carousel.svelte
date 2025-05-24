@@ -5,6 +5,11 @@
 
   const gallery_items = [
     {
+      url: "/src/lib/images/about/kate.jpg",
+      description: "Child with owl",
+    },
+  
+    {
       url: "/gallery-images/corn.jpg",
       description: "Corn",
     },
