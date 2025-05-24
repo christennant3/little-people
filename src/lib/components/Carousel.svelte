@@ -3,8 +3,8 @@
   import { sineInOut } from "svelte/easing";
   import { onMount } from "svelte";
   import kate from '$lib/images/about/kate.jpg';
-  import dales from '$lib/images/gallery/dales.jpg';
-  import pond from '$lib/images/gallery/pond-header.jpg';
+  import trunk from '$lib/images/gallery/trunk.jpg';
+  import pond from '$lib/images/gallery/owl.jpg';
 
   const gallery_items = [
     {
@@ -12,7 +12,7 @@
       description: "Child with owl",
     },
     {
-      url: dales,
+      url: trunk,
       description: "Child with owl",
     },
     {
@@ -22,24 +22,8 @@
     {
       url: kate,
       description: "Child with owl",
-    },
-
-    {
-      url: "/gallery-images/sand.jpg",
-      description: "Beach",
-    },
-    {
-      url: "/gallery-images/trunk.jpg",
-      description: "Woods",
-    },
-    {
-      url: "/gallery-images/owl.jpg",
-      description: "Children with owl",
-    },
-    {
-      url: "/gallery-images/woods2.jpg",
-      description: "Exploring in the woods",
-    },
+    }
+ 
   ];
 
   let currentSlideItem = 0;
