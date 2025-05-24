@@ -2,10 +2,11 @@
   import { slide } from "svelte/transition";
   import { sineInOut } from "svelte/easing";
   import { onMount } from "svelte";
+  import kate from '$lib/images/about/kate.jpg';
 
   const gallery_items = [
     {
-      url: "/src/lib/images/about/kate.jpg",
+      url: kate,
       description: "Child with owl",
     },
     {
@@ -13,10 +14,10 @@
       description: "Corn",
     },
     {
-      url: "/src/lib/images/about/kate.jpg",
+      url: kate,
       description: "Child with owl",
     },
-    
+
     {
       url: "/gallery-images/sand.jpg",
       description: "Beach",
