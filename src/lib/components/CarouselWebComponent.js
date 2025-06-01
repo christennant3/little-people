@@ -1,5 +1,6 @@
 class ImageCarousel extends HTMLElement {
     constructor() {
+      
         super();
         this.currentSlide = 0;
         this.autoAdvanceInterval = null;
