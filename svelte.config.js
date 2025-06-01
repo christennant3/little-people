@@ -10,17 +10,9 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: 'index.html', // Important for SPA mode
-			precompress: false,
-			strict: true
-		}),
-		// Configure for static site generation
-		prerender: {
-			handleHttpError: 'warn',
-			handleMissingId: 'warn'
-		}
+			fallback: 'index.html' // Important for SPA mode
+		})
 	}
-	// Note: removed duplicate preprocess line
 };
 
 export default config;
