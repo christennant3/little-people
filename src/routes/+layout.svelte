@@ -1,5 +1,3 @@
-
-
 <div class="app">
 	<div id="wrapper">
 		<Header />
