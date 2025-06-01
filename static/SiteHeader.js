@@ -57,7 +57,7 @@ class SiteHeader extends HTMLElement {
         super();
         this.currentIndex = 0;
         this.images = [
-            { url: '/gallery-images/woods.jpg', alt: 'Woods' },
+            { url: '/gallery-images/woods2.jpg', alt: 'Woods' },
             { url: '/gallery-images/corn.jpg', alt: 'Corn' },
             { url: '/gallery-images/sand.jpg', alt: 'Beach' },
             { url: '/gallery-images/trunk.jpg', alt: 'Woods' },
