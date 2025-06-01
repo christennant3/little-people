@@ -1,14 +1,14 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import { sineInOut } from "svelte/easing";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import kate from '$lib/images/about/kate.jpg';
   import trunk from '$lib/images/gallery/trunk.jpg';
-  import owl from '$lib/images/gallery/owl.jpg';
+  import pond from '$lib/images/gallery/owl.jpg';
 
   const gallery_items = [
     {
-      url: owl,
+      url: kate,
       description: "Child with owl",
     },
     {
@@ -16,45 +16,72 @@
       description: "Child with owl",
     },
     {
-      url: owl,
+      url: pond,
       description: "Corn",
     },
     {
       url: kate,
       description: "Child with owl",
     }
- 
   ];
 
   let currentSlideItem = 0;
+  let intervalId: number;
 
-  const nextImage = () => {
+  // Use function declarations instead of arrow functions for better compatibility
+  function nextImage() {
     currentSlideItem = (currentSlideItem + 1) % gallery_items.length;
-    debugger;
-  };
+    console.log('Next clicked, current slide:', currentSlideItem); // Replace debugger
+  }
 
-  const prevImage = () => {
-    if (currentSlideItem != 0) {
-      currentSlideItem = (currentSlideItem - 1) % gallery_items.length;
+  function prevImage() {
+    if (currentSlideItem !== 0) {
+      currentSlideItem = currentSlideItem - 1;
     } else {
       currentSlideItem = gallery_items.length - 1;
     }
-  };
+    console.log('Prev clicked, current slide:', currentSlideItem); // Replace debugger
+  }
 
-  const interval = setInterval(nextImage, 7000);
+  // Handle button clicks explicitly
+  function handleNextClick(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    nextImage();
+  }
+
+  function handlePrevClick(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    prevImage();
+  }
 
   onMount(() => {
-    gallery_items.forEach((item) => {
-      const img = new Image();
-      img.src = item.url;
-    });
+    // Ensure we're in the browser
+    if (typeof window !== 'undefined') {
+      // Preload images
+      gallery_items.forEach((item) => {
+        const img = new Image();
+        img.src = item.url;
+      });
+
+      // Set up interval
+      intervalId = setInterval(nextImage, 7000);
+    }
+  });
+
+  onDestroy(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
   });
 </script>
 
 <div class="carousel-buttons grid grid-cols-2 gap-4">
   <button
     class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-    on:click={() => prevImage()}
+    on:click={handlePrevClick}
+    type="button"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -70,12 +97,13 @@
         d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
       />
     </svg>
-    <span> Previous</span></button
-  >
+    <span> Previous</span>
+  </button>
 
   <button
     class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-    on:click={() => nextImage()}
+    on:click={handleNextClick}
+    type="button"
   >
     <span>Next</span>
     <svg
@@ -94,6 +122,7 @@
     </svg>
   </button>
 </div>
+
 <div>
   {#each [gallery_items[currentSlideItem]] as item (currentSlideItem)}
     <img
@@ -108,7 +137,8 @@
 <div class="carousel-buttons grid grid-cols-2 gap-4">
   <button
     class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-    on:click={() => prevImage()}
+    on:click={handlePrevClick}
+    type="button"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -124,12 +154,13 @@
         d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
       />
     </svg>
-    <span> Previous</span></button
-  >
+    <span> Previous</span>
+  </button>
 
   <button
     class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-    on:click={() => nextImage()}
+    on:click={handleNextClick}
+    type="button"
   >
     <span>Next</span>
     <svg
@@ -148,6 +179,7 @@
     </svg>
   </button>
 </div>
+
 <style lang="scss">
   .carousel-buttons {
     max-width: 300px;
