@@ -4,11 +4,11 @@
   import { onMount } from "svelte";
   import kate from '$lib/images/about/kate.jpg';
   import trunk from '$lib/images/gallery/trunk.jpg';
-  import pond from '$lib/images/gallery/owl.jpg';
+  import owl from '$lib/images/gallery/owl.jpg';
 
   const gallery_items = [
     {
-      url: kate,
+      url: owl,
       description: "Child with owl",
     },
     {
