@@ -62,7 +62,6 @@
 		width: 100%;
 		text-align: center;
 		background-color: #336699;
-		height: 61px;
 
 		a:link {
 			color: white;
