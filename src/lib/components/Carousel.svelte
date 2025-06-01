@@ -28,7 +28,7 @@
   let currentSlideItem = 0;
   let intervalId: number;
 
- 
+  // Use function declarations instead of arrow functions for better compatibility
   function nextImage() {
     currentSlideItem = (currentSlideItem + 1) % gallery_items.length;
     console.log('Next clicked, current slide:', currentSlideItem); // Replace debugger
@@ -40,7 +40,7 @@
     } else {
       currentSlideItem = gallery_items.length - 1;
     }
-    console.log('Prev clicked, current slide:', currentSlideItem); // 
+    console.log('Prev clicked, current slide:', currentSlideItem); // Replace debugger
   }
 
   // Handle button clicks explicitly
