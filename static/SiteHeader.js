@@ -17,7 +17,7 @@ class SiteHeader extends HTMLElement {
             <style>
                 .carousel {
                     position: relative;
-                    max-width: 800px;
+                    max-width: 1200px;
                     margin: 0 auto;
                     overflow: hidden;
                     border-radius: 8px;
@@ -25,15 +25,24 @@ class SiteHeader extends HTMLElement {
 
                 .carousel-container {
                     position: relative;
-                    aspect-ratio: 16/9;
+                    min-height: 600px;
+                    height: auto;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 .carousel-slide {
                     position: absolute;
-                    width: 100%;
-                    height: 100%;
+                    width: auto;
+                    height: auto;
+                    max-width: 100%;
+                    max-height: 800px;
                     opacity: 0;
                     transition: opacity 0.5s ease-in-out;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 .carousel-slide.active {
@@ -41,9 +50,11 @@ class SiteHeader extends HTMLElement {
                 }
 
                 .carousel-slide img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
+                    width: auto;
+                    height: auto;
+                    max-width: 100%;
+                    max-height: 800px;
+                    object-fit: contain;
                 }
 
                 .carousel-btn {
