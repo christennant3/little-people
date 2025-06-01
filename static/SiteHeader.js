@@ -93,7 +93,7 @@ class SiteHeader extends HTMLElement {
 
                 .dots {
                     position: absolute;
-                    bottom: 20px;
+                    bottom: 50px;
                     left: 50%;
                     transform: translateX(-50%);
                     display: flex;
