@@ -16,7 +16,7 @@
       description: "Child with owl",
     },
     {
-      url: pond,
+      url: owl,
       description: "Corn",
     },
     {
