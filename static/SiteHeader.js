@@ -25,11 +25,19 @@ class SiteHeader extends HTMLElement {
 
                 .carousel-container {
                     position: relative;
-                    min-height: 600px;
+                    min-height: 300px;
                     height: auto;
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    margin-bottom: 80px;
+                }
+
+                @media (min-width: 600px) {
+                    .carousel-container {
+                        min-height: 600px;
+                        margin-bottom: 20px;
+                    }
                 }
 
                 .carousel-slide {
@@ -44,7 +52,7 @@ class SiteHeader extends HTMLElement {
                     align-items: center;
                     justify-content: center;
                 }
-
+        
                 .carousel-slide.active {
                     opacity: 1;
                 }
