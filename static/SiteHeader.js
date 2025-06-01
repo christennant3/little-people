@@ -1,58 +1,5 @@
 class SiteHeader extends HTMLElement {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     constructor() {
         super();
         this.currentIndex = 0;
@@ -103,46 +50,68 @@ class SiteHeader extends HTMLElement {
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
-                    background: rgba(255, 255, 255, 0.3);
+                    background: rgba(0, 0, 0, 0.3);
                     border: none;
-                    width: 40px;
-                    height: 40px;
+                    width: 50px;
+                    height: 50px;
                     border-radius: 50%;
                     cursor: pointer;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     backdrop-filter: blur(4px);
-                    transition: background-color 0.3s;
+                    transition: all 0.3s ease;
+                    color: white;
+                    font-size: 24px;
+                    border: 2px solid rgba(255, 255, 255, 0.5);
+                    z-index: 10;
                 }
 
                 .carousel-btn:hover {
-                    background: rgba(255, 255, 255, 0.5);
+                    background: rgba(0, 0, 0, 0.5);
+                    transform: translateY(-50%) scale(1.1);
+                    border-color: rgba(255, 255, 255, 0.8);
                 }
 
-                .prev { left: 10px; }
-                .next { right: 10px; }
+                .carousel-btn:active {
+                    transform: translateY(-50%) scale(0.95);
+                }
+
+                .prev { left: 20px; }
+                .next { right: 20px; }
 
                 .dots {
                     position: absolute;
-                    bottom: 10px;
+                    bottom: 20px;
                     left: 50%;
                     transform: translateX(-50%);
                     display: flex;
-                    gap: 8px;
+                    gap: 12px;
+                    padding: 8px 16px;
+                    background: rgba(0, 0, 0, 0.3);
+                    border-radius: 20px;
+                    backdrop-filter: blur(4px);
                 }
 
                 .dot {
-                    width: 10px;
-                    height: 10px;
+                    width: 14px;
+                    height: 14px;
                     border-radius: 50%;
                     background: rgba(255, 255, 255, 0.5);
                     cursor: pointer;
-                    transition: background-color 0.3s;
+                    transition: all 0.3s ease;
+                    border: 2px solid transparent;
+                }
+
+                .dot:hover {
+                    background: rgba(255, 255, 255, 0.8);
+                    transform: scale(1.2);
                 }
 
                 .dot.active {
                     background: white;
+                    transform: scale(1.2);
+                    border-color: rgba(255, 255, 255, 0.8);
                 }
             </style>
 
@@ -155,8 +124,16 @@ class SiteHeader extends HTMLElement {
                     `).join('')}
                 </div>
 
-                <button class="carousel-btn prev" aria-label="Previous slide">←</button>
-                <button class="carousel-btn next" aria-label="Next slide">→</button>
+                <button class="carousel-btn prev" aria-label="Previous slide">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="carousel-btn next" aria-label="Next slide">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
 
                 <div class="dots">
                     ${this.images.map((_, index) => `
