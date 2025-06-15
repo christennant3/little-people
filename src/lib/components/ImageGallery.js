@@ -1,14 +1,13 @@
 class ImageGallery extends HTMLElement {
-
     constructor() {
         super();
         this.currentIndex = 0;
         this.images = [
-            { url: '/gallery-images/woods2.jpg', alt: 'Woods' },
-            { url: '/gallery-images/corn.jpg', alt: 'Corn' },
-            { url: '/gallery-images/sand.jpg', alt: 'Beach' },
-            { url: '/gallery-images/trunk.jpg', alt: 'Woods' },
-            { url: '/gallery-images/owl.jpg', alt: 'Owl' }
+            { url: 'gallery-images/woods2.jpg', alt: 'Woods' },
+            { url: 'gallery-images/corn.jpg', alt: 'Corn' },
+            { url: 'gallery-images/sand.jpg', alt: 'Beach' },
+            { url: 'gallery-images/trunk.jpg', alt: 'Woods' },
+            { url: 'gallery-images/owl.jpg', alt: 'Owl' }
         ];
     }
 
@@ -163,13 +162,13 @@ class ImageGallery extends HTMLElement {
         `;
 
         this.setupCarousel();
-    }
-
-    setupCarousel() {
+    }    setupCarousel() {
         const slides = this.querySelectorAll('.carousel-slide');
         const dots = this.querySelectorAll('.dot');
         const prevBtn = this.querySelector('.prev');
         const nextBtn = this.querySelector('.next');
+
+        if (!prevBtn || !nextBtn) return;
 
         const showSlide = (index) => {
             slides.forEach(slide => slide.classList.remove('active'));
