@@ -58,10 +58,24 @@
 				please do not hesitate to contact us.
 			</p>
 
+			<div class="free-childcare-banner">
+				<div class="banner-content">
+					<svg class="star-icon" viewBox="0 0 24 24" width="24" height="24">
+						<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+					</svg>
+					<p>
+						<a href="/fees" class="childcare-link">Free 30 hours of childcare</a> is available for eligible children.
+					</p>
+					<svg class="star-icon" viewBox="0 0 24 24" width="24" height="24">
+						<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+					</svg>
+				</div>
+			</div>
+
 			<hr />
 
 			<h2>Ofsted</h2>
-			<p>I am rated good. Download my report.</p>
+			<p>I am rated good.</p>
 		</div>
 	</div>
 </section>
@@ -74,5 +88,48 @@
 		}
 	}
 
+	.free-childcare-banner {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		background: linear-gradient(135deg, #e9f5ff 0%, #f0f9ff 100%);
+		border-radius: 12px;
+		border: 2px solid #93c5fd;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	}
 
+	.banner-content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		
+		p {
+			margin: 0;
+			font-size: 1.25rem;
+			font-weight: 600;
+			color: #1e40af;
+		}
+	}
+
+	.childcare-link {
+		color: #2563eb;
+		text-decoration: underline;
+		transition: all 0.2s ease;
+
+		&:hover {
+			color: #1e40af;
+			text-decoration: none;
+		}
+	}
+
+	.star-icon {
+		fill: #3b82f6;
+		animation: pulse 2s infinite;
+	}
+
+	@keyframes pulse {
+		0% { transform: scale(1); }
+		50% { transform: scale(1.1); }
+		100% { transform: scale(1); }
+	}
 </style>
