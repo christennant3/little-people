@@ -1,7 +1,3 @@
-<script>
-	import ImageCarousel from "../../lib/components/Carousel.svelte";
-</script>
-
 
 <svelte:head>
 	<title>Little Peoples' Childminding Gallery</title>
@@ -12,7 +8,7 @@
 		<div class="text-center">
 			<h1 class="hidden lg:block">Gallery</h1>
 			<!-- <ImageCarousel /> -->
-			<site-header></site-header>
+			<image-gallery></image-gallery>
 		</div>
 
 	</div>

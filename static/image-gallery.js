@@ -1,4 +1,4 @@
-class SiteHeader extends HTMLElement {
+class ImageGallery extends HTMLElement {
 
     constructor() {
         super();
@@ -213,4 +213,4 @@ class SiteHeader extends HTMLElement {
     }
 }
 
-customElements.define('site-header', SiteHeader);
+customElements.define('image-gallery', ImageGallery);
