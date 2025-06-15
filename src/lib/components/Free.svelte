@@ -20,7 +20,7 @@
         </li>
         <li>
             <strong>Apply online</strong> through
-            <a href="gov.uk">gov.uk</a> using your Government Gateway account
+            <a href="https://gov.uk">https://gov.uk</a> using your Government Gateway account
         </li>
         <li>
             <strong>Receive your eligibility code</strong> - this confirms your entitlement
