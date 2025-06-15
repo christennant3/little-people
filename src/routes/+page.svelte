@@ -6,6 +6,7 @@
 	onMount(() => {
 		const stars = document.querySelectorAll('.star-icon');
 		setTimeout(() => {
+			// @ts-ignore
 			stars.forEach(star => star.style.animation = 'none');
 		}, 6000);
 	});

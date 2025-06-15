@@ -7,6 +7,9 @@
     class="mx-auto"
 />
 <div class="text-center">
-    <p class="font-bold text-xl pb-3">Enquire now</p>
-    M:07961610806<br />Tel:02085672669
+    <p class="font-bold text-xl pb-0">Enquire now</p>
+    <a
+        href="mailto:kate.tennant91@gmail.com>"
+        class="text-xl pb-3">kate.tennant91@gmail.com</a
+    >
 </div>
