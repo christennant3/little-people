@@ -1,7 +1,14 @@
 <script>
-
 	import banner from '$lib/images/home/home-banner.jpg';
 	import Side from "../lib/components/Side.svelte";
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		const stars = document.querySelectorAll('.star-icon');
+		setTimeout(() => {
+			stars.forEach(star => star.style.animation = 'none');
+		}, 6000);
+	});
 </script>
 
 <svelte:head>
@@ -71,9 +78,7 @@
 					</svg>
 				</div>
 			</div>
-
-			<hr />
-
+			
 			<h2>Ofsted</h2>
 			<p>I am rated good.</p>
 		</div>
@@ -91,10 +96,10 @@
 	.free-childcare-banner {
 		margin: 2rem 0;
 		padding: 1.5rem;
-		background: linear-gradient(135deg, #e9f5ff 0%, #f0f9ff 100%);
+		background: linear-gradient(135deg, rgba(153, 51, 102, 0.1) 0%, rgba(64, 117, 166, 0.15) 100%);
 		border-radius: 12px;
-		border: 2px solid #93c5fd;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+		border: 3px solid var(--color-theme-2);
+		box-shadow: 0 4px 12px -2px rgba(64, 117, 166, 0.25);
 	}
 
 	.banner-content {
@@ -105,31 +110,34 @@
 		
 		p {
 			margin: 0;
-			font-size: 1.25rem;
+			font-size: 1.35rem;
 			font-weight: 600;
-			color: #1e40af;
+			color: var(--color-theme-1);
 		}
 	}
 
 	.childcare-link {
-		color: #2563eb;
+		color: var(--color-theme-2);
 		text-decoration: underline;
 		transition: all 0.2s ease;
+		font-weight: 700;
 
 		&:hover {
-			color: #1e40af;
+			color: #669933;
 			text-decoration: none;
 		}
 	}
 
 	.star-icon {
-		fill: #3b82f6;
-		animation: pulse 2s infinite;
+		fill: var(--color-theme-2);
+		animation: pulse 2s 3;  // Run 3 times (6 seconds total)
+		width: 28px;
+		height: 28px;
 	}
 
 	@keyframes pulse {
 		0% { transform: scale(1); }
-		50% { transform: scale(1.1); }
+		50% { transform: scale(1.15); opacity: 0.8; }
 		100% { transform: scale(1); }
 	}
 </style>
