@@ -33,6 +33,15 @@
 				care, please feel free to reach out via email. I look forward to
 				hearing from you!
 			</p>
+			<p>
+	You can also find me on <a href="https://www.facebook.com/people/Little-Peoples-Childminding/100063605529490/" target="_blank">Facebook</a>.
+   </p>
+   <p>
+	I am always happy to answer any questions you may have about my
+	childminding services and how I can support your child's growth
+	and development.
+   </p>
+
 		</div>
 	</div>
 </section>

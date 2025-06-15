@@ -9,7 +9,7 @@
 <div class="text-center">
     <p class="font-bold text-xl pb-0">Enquire now</p>
     <a
-        href="mailto:kate.tennant91@gmail.com>"
-        class="text-xl pb-3">kate.tennant91@gmail.com</a
+        href="/contact"
+        class="text-xl pb-3">Contact me</a
     >
 </div>
