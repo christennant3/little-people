@@ -96,8 +96,6 @@
     clearly outlined in my fees policy and itemised on invoices.
 </p>
 <p>If you requre more hours than the funded hours, I can provide additional care at my normal rates.</p>
-
-.
 <style lang="scss">
 
     ol {
